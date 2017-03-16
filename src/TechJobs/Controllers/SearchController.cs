@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using TechJobs.Models;
 
 namespace TechJobs.Controllers
@@ -23,7 +22,6 @@ namespace TechJobs.Controllers
             if (searchTerm == null)
             {
                 ViewBag.type = searchType;
-                ViewBag.column = searchType;
                 ViewBag.error = "Please enter a search query.";
                 return View("Index");
             }
