@@ -6,24 +6,38 @@
     <p>
         @foreach (KeyValuePair<string, string> column in ViewBag.columns)
         {
-            <span>
-                <input type="radio"
-                       name="searchType"
-                       id="@column.Key"
-                       value="@column.Key" 
-                       checked="@column.Key == 'all''"/>
-                <label for="@column.Key">@column.Value</label>
-            </span>
+            if (column.Key == ViewBag.type)
+            {
+                <span>
+                    <input type="radio"
+                           name="searchType"
+                           id="@column.Key"
+                           value="@column.Key"
+                           checked="@ViewBag.type" />
+                    <label for="@column.Key">@column.Value</label>
+                </span>
+            }
+            else
+            {
+                <span>
+                    <input type="radio"
+                           name="searchType"
+                           id="@column.Key"
+                           value="@column.Key"/>
+                    <label for="@column.Key">@column.Value</label>
+                </span>
+            }
         }
     </p>
 
     <p>
         <label for="searchTerm">Keyword:</label>
-        <input type="text" name="searchTerm" id="searchTerm" />
+        <input type="text" name="searchTerm" id="searchTerm" value="@ViewBag.search" />
     </p>
 
     <input type="submit" value="Search" />
 </form>
+<p style="color: red;">@ViewBag.error</p>
 
 <hr />
 
@@ -32,5 +46,32 @@
 
     <h3>@ViewBag.jobs.Count Result(s)</h3>
 
-    // TODO #2 - Loop over jobs dictionary and display all job fields 
+    // TODO #2 - Loop over jobs dictionary and display all job fields
+    int counter = 0;
+    foreach (Dictionary<string, string> list in ViewBag.jobs)
+    {
+        <table class="job-listing">
+
+            @foreach (KeyValuePair<string, string> job in list)
+            {
+                <tr>
+                    @if (job.Key == "name")
+                    {
+                        <td>@char.ToUpper(@job.Key[0])@job.Key.Substring(1): </td>
+                        <td>@job.Value</td>
+                    }
+                    else
+                    {
+                        <td><a asp-controller="List" asp-action="Values" asp-route-column="@job.Key">@char.ToUpper(@job.Key[0])@job.Key.Substring(1)</a>: </td>
+                        <td>@job.Value</td>
+                    }
+                </tr>
+            }
+        </table>
+        counter++;
+        if (counter < ViewBag.jobs.Count)
+        {
+            <hr />
+        }
+    }
 }

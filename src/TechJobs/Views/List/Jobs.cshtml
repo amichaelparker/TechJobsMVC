@@ -2,6 +2,33 @@
 
 <h3>@ViewBag.jobs.Count Result(s)</h3>
 
-@{ 
-    // TODO #3 - Use the same list display from Views/Search/Index.cshtml 
+@{
+    // TODO #3 - Use the same list display from Views/Search/Index.cshtml
+    int counter = 0;
+    foreach (Dictionary<string, string> list in ViewBag.jobs)
+    {
+        <table class="job-listing">
+
+            @foreach (KeyValuePair<string, string> job in list)
+            {
+                <tr>
+                    @if (job.Key == "name")
+                    {
+                        <td>@char.ToUpper(@job.Key[0])@job.Key.Substring(1): </td>
+                        <td>@job.Value</td>
+                    }
+                    else
+                    {
+                        <td><a asp-controller="List" asp-action="Values" asp-route-column="@job.Key">@char.ToUpper(@job.Key[0])@job.Key.Substring(1)</a>: </td>
+                        <td>@job.Value</td>
+                    }
+                </tr>
+            }
+        </table>
+        counter++;
+        if (counter < ViewBag.jobs.Count)
+        {
+            <hr />
+        }
+    }
 }
